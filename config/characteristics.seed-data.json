@@ -1,0 +1,40 @@
+{
+  "type": "radio",
+  "characteristic": "gender", 
+  "value": ["female", "male"]
+}, 
+{
+  "type": "radio",
+  "characteristic": "age", 
+  "value": ["puppy", "young", "adult", "senior"]
+}, 
+{
+  "type": "radio",
+  "characteristic": "size", 
+  "value": ["S", "M", "L", "XL"]
+}, 
+{
+  "type": "radio",
+  "characteristic": "training", 
+  "value": ["needs training", "has basic training", "well trained"]
+}, 
+{
+  "type": "checkbox",
+  "characteristic": "characteristics", 
+  "value": ["house-broken", "crate-trained", "neutered/spayed", "vaccinated", "micro-chipped", "specal-needs"]
+}, 
+{
+  "type": "checkbox",
+  "characteristic": "compatibility", 
+  "value": ["apartments", "kids", "kitties", "puppies", "seniors"]
+}, 
+{
+  "type": "input",
+  "characteristic": "biography", 
+  "value": ["Biography"]
+}
+{
+  "type": "input",
+  "characteristic": "adoption fee", 
+  "value": ["$500"]
+}

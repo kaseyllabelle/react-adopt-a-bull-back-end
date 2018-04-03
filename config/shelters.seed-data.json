@@ -1,0 +1,26 @@
+[{
+  "name": "Animal Rescue League of Boston",
+  "address": {
+    "number": "10",
+    "street": "Chandler Street",
+    "city": "Boston",
+    "state": "MA",
+    "zipcode": "02116"
+  },
+  "telephone": "617-426-9170",
+  "email": "adoption@arlboston.org",
+  "adoptabullPuppies": "[{  }]"
+},
+{
+  "name": "MSPCA Boston",
+  "address": {
+    "number": "350",
+    "street": "S Huntington Avenue",
+    "city": "Jamaica Plain",
+    "state": "MA",
+    "zipcode": "02130"
+  },
+  "telephone": "617-522-5055",
+  "email": "adoption@mspca.org",
+  "adoptabullPuppies": "[{  }]"
+}]
