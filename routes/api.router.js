@@ -95,18 +95,29 @@ router.delete('/adopters/:id', (req, res) => {
 // PUPPIES
 
 // get initial puppies
-router.get('/puppies/:position', (req, res) => { 
+router.get('/puppies/:userId/:position', (req, res) => { 
 	const allOfThePuppies = Puppies.find().count().exec();
-	return Puppies
-	.find()
-	.populate('shelterId')
-	.limit(~~req.params.position === 0 ? 2 : 1)
-	.skip(~~req.params.position)
-	.exec()
-	.then(data => {
-		data.push({nextPosition: ~~req.params.position + (~~req.params.position === 0) ? 2 : 1});
-		console.log(data);
-		return res.status(203).json(data);
+	return Adopters.findById(req.params.userId).exec()
+	.then((favoritedPuppies) => {
+		return Puppies
+		.find()
+		.populate('shelterId')
+		.limit(~~req.params.position === 0 ? 2 : 1)
+		.skip(~~req.params.position)
+		.exec()
+		.then(data => {
+			if(!data[0]) {
+				return res.status(416).json({});
+			}
+			for(let i=0; i<favoritedPuppies.favoritePuppies.length; i++){
+				if(String(favoritedPuppies.favoritePuppies[i]) == String(data[0]._id)){
+					return res.status(303).json(data);
+				}
+			}
+			data.push({nextPosition: ~~req.params.position + (~~req.params.position === 0) ? 2 : 1});
+			// console.log(data);
+			return res.status(203).json(data);
+		});	
 	});
 });
 
