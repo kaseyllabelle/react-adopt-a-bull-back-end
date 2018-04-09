@@ -16,16 +16,15 @@ const userRouter = require('./routes/user.router');
 
 const app = express();
 
-app.use(bodyParser());
-app.use(bodyParser.json({ limit: '500kb', extended: true })); 
-app.use(bodyParser.urlencoded({ limit: '500kb', extended: true }));
+app.use(bodyParser.json({limit: 500000})); 
+app.use(bodyParser.urlencoded({limit: 500000, extended: true}));
 
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
   res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
   if (req.method === 'OPTIONS') {
-    return res.send(204);
+    return res.sendStatus(204);
   }
   next();
 });

@@ -122,4 +122,37 @@ router.get('/:userId', (req, res) => {
   });
 });
 
+// reset password
+router.patch('/:userId', (req, res) => {
+  console.log(req.params.userId, req.body);
+  Users.findById(req.params.userId).exec()
+  .then(_user => {
+    console.log(_user);
+    const user = _user;
+    if (!user) {
+      return Promise.reject({
+        reason: 'LoginError',
+        message: 'Incorrect email or password'
+      });
+    }
+    return user.validatePassword(req.body.oldPassword);
+  }).then(userData => {    
+    return Users.hashPassword(req.body.newPassword);
+  }).then(hash => {
+    return Users.findByIdAndUpdate(req.params.userId, {password: hash}).exec()
+    .then(() => {
+      res.sendStatus(200);
+    });
+  }).catch(error => {
+    console.log(error);
+  })
+});
+
+// deactivate account
+router.delete('/:userId', (req, res) => {
+  return Users.findById(req.params.userId).remove().then(userData => {
+    res.sendStatus(200);
+  });
+});
+
 module.exports = router;

@@ -13,8 +13,8 @@ const puppiesSchema = mongoose.Schema({
   age: String,
   size: String,
   training: String,
-  characteristics: [{type: String}],
-  compatibility: [{type: String}],
+  characteristics: String,
+  compatibility: String,
   biography: String,
   adoptionFee: String,
   shelterId: {

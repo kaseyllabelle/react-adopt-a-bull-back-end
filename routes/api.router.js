@@ -188,21 +188,29 @@ router.get('/puppies', (req, res) => {
 
 // create puppy
 router.post('/puppies', (req, res) => {
-	const requiredFields = ['photo', 'name', 'gender', 'age', 'size', 'shelterId', 'distance'];
+	console.log(req.body.puppyJSON['name']);
+	console.log(req.body.shelterId);
+	console.log(req.body);
+	const requiredFields = ['photo', 'name', 'gender', 'age', 'size', 'training', 'adoptionFee'];
 	for (let i=0; i<requiredFields.length; i++) {
 		const field = requiredFields[i];
-		if (!(field in req.body)) {
+		if (!(req.body.puppyJSON[field])) {
 			const message = `Missing \`${field}\` in request body`
 			console.error(message);
 			return res.status(400).send(message);
 		}
 	}
 	Puppies.create({
-		photo: req.body.photo,
-		name: req.body.name,
-		gender: req.body.gender,
-		age: req.body.age,
-		size: req.body.size,
+		photo: req.body.puppyJSON.photo,
+		name: req.body.puppyJSON.name,
+		gender: req.body.puppyJSON.gender,
+		age: req.body.puppyJSON.age,
+		size: req.body.puppyJSON.size,
+		training: req.body.puppyJSON.training,
+		characteristics: req.body.puppyJSON.characteristics,
+		compatibility: req.body.puppyJSON.compatibility,
+		biography: req.body.puppyJSON.biography,
+		adoptionFee: req.body.puppyJSON.adoptionFee,
 		shelterId: req.body.shelterId,
 		distance: req.body.distance
 	})
