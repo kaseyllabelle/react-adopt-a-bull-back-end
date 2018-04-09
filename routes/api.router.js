@@ -214,7 +214,19 @@ router.post('/puppies', (req, res) => {
 		shelterId: req.body.shelterId,
 		distance: req.body.distance
 	})
-	.then(puppy => res.status(201).json(puppy))
+	.then(puppy => {
+		return Shelters.findByIdAndUpdate(req.body.shelterId, 
+		{ 
+			$addToSet:{'adoptabullPuppies': puppy._id}
+		}, 
+		{
+			safe: true, 
+			upsert: true, 
+			new : true
+		}).exec().then(() => {
+			return res.status(201).json(puppy)
+		});
+	})
 	.catch(err => {
 		console.error(err);
 		res.status(500).json({message: 'Internal server error'});
@@ -265,9 +277,14 @@ router.get('/shelters', (req, res) => {
 
 // find shelter by id
 router.get('/shelters/:id', (req, res) => {
-	Shelters
+	return Shelters
 	.findById(req.params.id)
-	.then(shelter =>res.json(shelter))
+	.populate('adoptabullPuppies')
+	.exec()
+	.then(shelter => {
+		console.log(shelter, "xyz");
+		return res.status(200).json(shelter)
+	})
 	.catch(err => {
 		console.error(err);
 		res.status(500).json({message: 'Internal server error'})
