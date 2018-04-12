@@ -115,7 +115,6 @@ router.get('/puppies/:userId/:position', (req, res) => {
 				}
 			}
 			data.push({nextPosition: ~~req.params.position + (~~req.params.position === 0) ? 2 : 1});
-			// console.log(data);
 			return res.status(203).json(data);
 		});	
 	});
@@ -282,7 +281,6 @@ router.get('/shelters/:id', (req, res) => {
 	.populate('adoptabullPuppies')
 	.exec()
 	.then(shelter => {
-		console.log(shelter, "xyz");
 		return res.status(200).json(shelter)
 	})
 	.catch(err => {
@@ -334,22 +332,15 @@ router.post('/shelters', (req, res) => {
 
 // update shelter by id
 router.put('/shelters/:id', (req, res) => {
-	if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
-		const message = (
-			`Request path id (${req.params.id}) and request body id ` +
-			`(${req.body.id}) must match`);
-		console.error(message);
-		return res.status(400).json({message: message});
-	}
 	const toUpdate = {};
-	const updateableFields = ['name', 'address', 'telephone', 'email', 'adoptabullPuppies'];
+	const updateableFields = ['shelter-name', 'shelter-address', 'shelter-phone', 'shelter-email', 'adoptabullPuppies'];
 	updateableFields.forEach(field => {
-		if (field in req.body) {
-			toUpdate[field] = req.body[field];
+		if (field in req.body.shelterProfileJSON) {
+			toUpdate[field.replace('shelter-', '')] = req.body.shelterProfileJSON[field];
 		}
 	});
-	Shelters.findByIdAndUpdate(req.params.id, {$set: toUpdate})
-	.then(shelter => res.status(204).end())
+	return Shelters.findByIdAndUpdate(req.params.id, {$set: toUpdate})
+	.then(shelter => res.status(201).json(shelter))
 	.catch(err => res.status(500).json({message: 'Internal server error'}));
 });
 
