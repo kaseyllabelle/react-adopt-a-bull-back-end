@@ -339,19 +339,25 @@ router.post('/shelters', (req, res) => {
 // update shelter by id
 router.put('/shelters/:id', (req, res) => {
 	let toUpdate = {};
-	// console.log(req.body);
 	const updateableFields = ['name', 'number', 'street', 'city', 'state', 'zipcode', 'phone', 'email', 'adoptabullPuppies'];
-	// console.log(req.body.shelterProfileJSON);
+	console.log('req.body =', req.body);
+	console.log('req.params =', req.params);
+	console.log('req.params.id =', req.params.id);
+	console.log('req.body.shelterProfileJSON =', req.body.shelterProfileJSON);
+	// updateableFields.forEach(field => {
+	// 	if (field in req.body.shelterProfileJSON) {
+	// 		toUpdate[field] = req.body.shelterProfileJSON[field];
+	// 	}
+	// });
 	updateableFields.forEach(field => {
-		if (field in req.body.shelterProfileJSON) {
-			toUpdate[field] = req.body.shelterProfileJSON[field];
+		if (field in req.body) {
+			toUpdate[field] = req.body[field];
 		}
 	});
-	// console.log(toUpdate);
-	// console.log(req.body);
 	// res.sendStatus(req.body);
-	return Shelters.findByIdAndUpdate(req.params.id, {$set: toUpdate})
-	.then(shelter => res.status(201).json(shelter))
+	Shelters.findByIdAndUpdate(req.params.id, {$set: toUpdate})
+	.then(shelter => res.status(204).json(shelter))
+	// .then(shelter => res.status(201).json(shelter))
 	.catch(err => res.status(500).json({message: 'Internal server error'}));
 });
 
