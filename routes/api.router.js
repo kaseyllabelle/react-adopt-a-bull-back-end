@@ -308,19 +308,25 @@ router.get('/shelters', (req, res) => {
 
 // create shelter
 router.post('/shelters', (req, res) => {
-	const requiredFields = ['name', 'address', 'telephone', 'email'];
-	for (let i=0; i<requiredFields.length; i++) {
-		const field = requiredFields[i];
-		if (!(field in req.body)) {
-			const message = `Missing \`${field}\` in request body`
-			console.error(message);
-			return res.status(400).send(message);
-		}
-	}
+	// const requiredFields = ['name', 'address', 'phone', 'email'];
+	// for (let i=0; i<requiredFields.length; i++) {
+	// 	const field = requiredFields[i];
+	// 	if (!(field in req.body)) {
+	// 		const message = `Missing \`${field}\` in request body`
+	// 		console.error(message);
+	// 		return res.status(400).send(message);
+	// 	}
+	// }
 	Shelters.create({
 		name: req.body.name,
-		address: req.body.address,
-		telephone: req.body.telephone,
+		address: {
+			number: req.body.number,
+			street: req.body.street,
+			city: req.body.city,
+			state: req.body.state,
+			zipcode: req.body.zipcode
+		},
+		phone: req.body.phone,
 		email: req.body.email
 	})
 	.then(shelter => res.status(201).json(shelter))
@@ -332,13 +338,18 @@ router.post('/shelters', (req, res) => {
 
 // update shelter by id
 router.put('/shelters/:id', (req, res) => {
-	const toUpdate = {};
-	const updateableFields = ['shelter-name', 'shelter-address', 'shelter-phone', 'shelter-email', 'adoptabullPuppies'];
+	let toUpdate = {};
+	console.log(req.body);
+	const updateableFields = ['name', 'number', 'street', 'city', 'state', 'zipcode', 'phone', 'email', 'adoptabullPuppies'];
+	console.log(req.body.shelterProfileJSON);
 	updateableFields.forEach(field => {
 		if (field in req.body.shelterProfileJSON) {
-			toUpdate[field.replace('shelter-', '')] = req.body.shelterProfileJSON[field];
+			toUpdate[field] = req.body.shelterProfileJSON[field];
 		}
 	});
+	console.log(toUpdate);
+	console.log(req.body);
+	res.sendStatus(req.body);
 	return Shelters.findByIdAndUpdate(req.params.id, {$set: toUpdate})
 	.then(shelter => res.status(201).json(shelter))
 	.catch(err => res.status(500).json({message: 'Internal server error'}));

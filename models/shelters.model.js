@@ -12,7 +12,7 @@ const sheltersSchema = mongoose.Schema({
   	state: String,
   	zipcode: String
   },
-  telephone: String,
+  phone: String,
   email: String,
   _creator: {
     type: mongoose.Schema.ObjectId, 
