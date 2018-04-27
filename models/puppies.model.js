@@ -7,8 +7,14 @@ const puppiesSchema = mongoose.Schema({
   created: {
     type: Date, default: Date.now
   },
-  photo: String,
-  name: String,
+  photo: {
+    type: String, 
+    required: true
+  },
+  name: {
+    type: String, 
+    required: true
+  },
   gender: String,
   age: String,
   size: String,

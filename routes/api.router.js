@@ -187,18 +187,6 @@ router.get('/puppies', (req, res) => {
 
 // create puppy
 router.post('/puppies', (req, res) => {
-	console.log(req.body.puppyJSON['name']);
-	console.log(req.body.shelterId);
-	console.log(req.body);
-	const requiredFields = ['photo', 'name', 'gender', 'age', 'size', 'training', 'adoptionFee'];
-	for (let i=0; i<requiredFields.length; i++) {
-		const field = requiredFields[i];
-		if (!(req.body.puppyJSON[field])) {
-			const message = `Missing \`${field}\` in request body`
-			console.error(message);
-			return res.status(400).send(message);
-		}
-	}
 	Puppies.create({
 		photo: req.body.puppyJSON.photo,
 		name: req.body.puppyJSON.name,
